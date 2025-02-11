@@ -4,7 +4,6 @@ public class Novel implements Comparable<Novel>
 {
     private final int MAX_YEAR = 2025;
     private final int MIN_YEAR = 1700;
-    private final int BEGIN_INDEX = 0;
 
     private final String title;
     private final String author;
