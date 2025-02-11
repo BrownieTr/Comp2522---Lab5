@@ -2,6 +2,7 @@ package ca.bcit.comp2522.lab5;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class BookStore
 {
@@ -13,16 +14,42 @@ public class BookStore
     );
     private final int MIN_NUM_IN_A_DECADE = 0;
     private final int MAX_NUM_IN_A_DECADE = 9;
+    private final int MAP_CAPACITY = 85;
 
     private final String bookStoreName;
     private final List<Novel> novels = new ArrayList<>();
+    private final HashMap<String, Novel> map = new HashMap<>(MAP_CAPACITY);
 
     public BookStore(final String bookStoreName)
     {
         validateString(bookStoreName);
         this.bookStoreName = bookStoreName;
+        addNovelToList();
+        addNovelToMap(novels);
+    }
 
-        // Populates the list with data
+    private void validateString(final String s)
+    {
+        if (s == null || s.isEmpty())
+        {
+            throw new IllegalArgumentException("String cannot be null or empty");
+        }
+    }
+
+    private void validateDecade(final int decade)
+    {
+        for (int eachDecade : DECADES)
+        {
+            if (decade == eachDecade)
+            {
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Invalid decade!");
+    }
+
+    private void addNovelToList()
+    {
         novels.add(new Novel("The Adventures of Augie March", "Saul Bellow", 1953));
         novels.add(new Novel("All the King’s Men", "Robert Penn Warren", 1946));
         novels.add(new Novel("American Pastoral", "Philip Roth", 1997));
@@ -125,24 +152,12 @@ public class BookStore
         novels.add(new Novel("Wide Sargasso Sea", "Jean Rhys", 1966));
     }
 
-    private void validateString(final String s)
+    private void addNovelToMap(final List<Novel> novels)
     {
-        if (s == null || s.isEmpty())
+        for (Novel novel : novels)
         {
-            throw new IllegalArgumentException("String cannot be null or empty");
+            map.put(novel.getTitle(), novel);
         }
-    }
-
-    private void validateDecade(final int decade)
-    {
-        for (int eachDecade : DECADES)
-        {
-            if (decade == eachDecade)
-            {
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Invalid decade!");
     }
 
     public void printAllTitles()
