@@ -1,8 +1,6 @@
 package ca.bcit.comp2522.lab5;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 public class BookStore
 {
@@ -18,7 +16,7 @@ public class BookStore
 
     private final String bookStoreName;
     private final List<Novel> novels = new ArrayList<>();
-    private final HashMap<String, Novel> map = new HashMap<>(MAP_CAPACITY);
+    private final Map<String, Novel> map = new HashMap<>(MAP_CAPACITY);
 
     public BookStore(final String bookStoreName)
     {
@@ -160,6 +158,21 @@ public class BookStore
         }
     }
 
+    protected String getBookStoreName()
+    {
+        return bookStoreName;
+    }
+
+    protected List<Novel> getNovels()
+    {
+        return novels;
+    }
+
+    protected Map<String, Novel> getMap()
+    {
+        return map;
+    }
+
     public void printAllTitles()
     {
         System.out.println("Titles:");
@@ -226,6 +239,7 @@ public class BookStore
 
     public static void main(final String[] args)
     {
+        // Part 1
         final BookStore bookstore;
         final Novel oldest;
         final List<Novel> fifteenCharTitles;
@@ -254,5 +268,30 @@ public class BookStore
         System.out.println("\nBooks with titles 15 characters long:");
         fifteenCharTitles = bookstore.getBooksThisLength(15);
         fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
+
+        // Part 2
+        final Iterator<String> title;
+        final Map<String, Novel> map;
+        final Set<String> KeySet;
+        final List<String> KeyList;
+
+        map = bookstore.getMap();
+        KeySet = map.keySet();
+        title = KeySet.iterator();
+        KeyList = new ArrayList<>(KeySet);
+        Collections.sort(KeyList);
+
+        System.out.println("\nTitles in Map:");
+        while (title.hasNext())
+        {
+            final String key = title.next();
+            System.out.println(key);
+        }
+
+        System.out.println("\nNovels in Map:");
+        for(String s : KeyList)
+        {
+            System.out.println(map.get(s).toString());
+        }   
     }
 }

@@ -1,7 +1,6 @@
 package ca.bcit.comp2522.lab5;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BookStore
 {
@@ -13,16 +12,42 @@ public class BookStore
     );
     private final int MIN_NUM_IN_A_DECADE = 0;
     private final int MAX_NUM_IN_A_DECADE = 9;
+    private final int MAP_CAPACITY = 85;
 
     private final String bookStoreName;
     private final List<Novel> novels = new ArrayList<>();
+    private final Map<String, Novel> map = new HashMap<>(MAP_CAPACITY);
 
     public BookStore(final String bookStoreName)
     {
         validateString(bookStoreName);
         this.bookStoreName = bookStoreName;
+        addNovelToList();
+        addNovelToMap(novels);
+    }
 
-        // Populates the list with data
+    private void validateString(final String s)
+    {
+        if (s == null || s.isEmpty())
+        {
+            throw new IllegalArgumentException("String cannot be null or empty");
+        }
+    }
+
+    private void validateDecade(final int decade)
+    {
+        for (int eachDecade : DECADES)
+        {
+            if (decade == eachDecade)
+            {
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Invalid decade!");
+    }
+
+    private void addNovelToList()
+    {
         novels.add(new Novel("The Adventures of Augie March", "Saul Bellow", 1953));
         novels.add(new Novel("All the King’s Men", "Robert Penn Warren", 1946));
         novels.add(new Novel("American Pastoral", "Philip Roth", 1997));
@@ -125,24 +150,27 @@ public class BookStore
         novels.add(new Novel("Wide Sargasso Sea", "Jean Rhys", 1966));
     }
 
-    private void validateString(final String s)
+    private void addNovelToMap(final List<Novel> novels)
     {
-        if (s == null || s.isEmpty())
+        for (Novel novel : novels)
         {
-            throw new IllegalArgumentException("String cannot be null or empty");
+            map.put(novel.getTitle(), novel);
         }
     }
 
-    private void validateDecade(final int decade)
+    protected String getBookStoreName()
     {
-        for (int eachDecade : DECADES)
-        {
-            if (decade == eachDecade)
-            {
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Invalid decade!");
+        return bookStoreName;
+    }
+
+    protected List<Novel> getNovels()
+    {
+        return novels;
+    }
+
+    protected Map<String, Novel> getMap()
+    {
+        return map;
     }
 
     public void printAllTitles()
@@ -211,15 +239,59 @@ public class BookStore
 
     public static void main(final String[] args)
     {
-        final String bookStoreName = "Book Store";
-        final BookStore bookStore = new BookStore(bookStoreName);
+        // Part 1
+        final BookStore bookstore;
+        final Novel oldest;
+        final List<Novel> fifteenCharTitles;
 
-        bookStore.printTitlesInAlphaOrder();
-        System.out.println();
-        bookStore.printGroupByDecade(1930);
-        System.out.println();
-        bookStore.getLongest();
+        bookstore = new BookStore("Classic Novels Collection");
+        System.out.println("All Titles in UPPERCASE:");
+        bookstore.printAllTitles();
+        System.out.println("\nBook Titles Containing 'the':");
+        bookstore.printBookTitle("the");
+        System.out.println("\nAll Titles in Alphabetical Order:");
+        bookstore.printTitlesInAlphaOrder();
+        System.out.println("\nBooks from the 2000s:");
+        bookstore.printGroupByDecade(2000);
+        System.out.println("\nLongest Book Title:");
+        bookstore.getLongest();
+//        System.out.println("\nIs there a book written in 1950?");
+//        System.out.println(bookstore.isThereABookWrittenBetween(1950));
+//        System.out.println("\nHow many books contain 'heart'?");
+//        System.out.println(bookstore.howManyBooksContain("heart"));
+//        System.out.println("\nPercentage of books written between 1940 and 1950:");
+//        System.out.println(bookstore.whichPercentWrittenBetween(1940, 1950) + "%");
+//        System.out.println("\nOldest book:");
+//        oldest = bookstore.getOldestBook();
+//        System.out.println(oldest.getTitle() + " by " + oldest.getAuthorName() + ", " +
+//                oldest.getYearPublished());
+//        System.out.println("\nBooks with titles 15 characters long:");
+//        fifteenCharTitles = bookstore.getBooksThisLength(15);
+//        fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
 
+        // Part 2
+        final Iterator<String> title;
+        final Map<String, Novel> map;
+        final Set<String> KeySet;
+        final List<String> KeyList;
 
+        map = bookstore.getMap();
+        KeySet = map.keySet();
+        title = KeySet.iterator();
+        KeyList = new ArrayList<>(KeySet);
+        Collections.sort(KeyList);
+
+        System.out.println("\nTitles in Map:");
+        while (title.hasNext())
+        {
+            final String key = title.next();
+            System.out.println(key);
+        }
+
+        System.out.println("\nNovels in Map:");
+        for(String s : KeyList)
+        {
+            System.out.println(map.get(s).toString());
+        }   
     }
 }
