@@ -59,9 +59,17 @@ public class Novel implements Comparable<Novel>
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("Title: " + title + "\n");
-        sb.append("Author: " + author + "\n");
-        sb.append("Year Published: " + publishedYear + "\n");
+        sb.append("Title: ").append(title).append("\n");
+        sb.append("Author: ").append(author).append("\n");
+        sb.append("Year Published: ").append(publishedYear).append("\n");
         return sb.toString();
+    }
+
+    public String getAuthorName() {
+        return String.format("Author: %s", author);
+    }
+
+    public String getYearPublished() {
+        return String.format("Year Published: %s", publishedYear);
     }
 }

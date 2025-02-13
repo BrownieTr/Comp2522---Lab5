@@ -64,4 +64,12 @@ public class Novel implements Comparable<Novel>
         sb.append("Year Published: ").append(publishedYear).append("\n");
         return sb.toString();
     }
+
+    public String getAuthorName() {
+        return String.format("Author: %s", author);
+    }
+
+    public String getYearPublished() {
+        return String.format("Year Published: %s", publishedYear);
+    }
 }

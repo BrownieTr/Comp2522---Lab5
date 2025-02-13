@@ -294,4 +294,56 @@ public class BookStore
             System.out.println(map.get(s).toString());
         }   
     }
+
+    private List<Novel> getBooksThisLength(int titleLength) {
+
+        List<Novel> books = new ArrayList<>();
+        for (Novel novel : novels) {
+            if (novel.getTitle().length() == titleLength) {
+                books.add(novel);
+            }
+        }
+        return books;
+
+    }
+
+    private Novel getOldestBook() {
+        Novel oldest = novels.get(0);
+        for (Novel novel : novels) {
+            if (novel.getPublishedYear() < novel.getPublishedYear()) {
+                oldest = novel;
+            }
+        }
+        return oldest;
+    }
+
+    private double whichPercentWrittenBetween(int first, int last) {
+        int count = 0;
+        for (Novel novel : novels) {
+            if (novel.getPublishedYear() < first || novel.getPublishedYear() > last) {
+                count++;
+            }
+        }
+        return (double) count / novels.size() * 100;
+    }
+
+    private boolean howManyBooksContain(String word) {
+        int count = 0;
+        for (Novel novel : novels) {
+            if (novel.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                count++;
+            }
+        }
+        return count >= 0;
+    }
+
+    private boolean isThereABookWrittenBetween(int year) {
+
+        for (Novel novel : novels) {
+            if (novel.getPublishedYear() == year) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

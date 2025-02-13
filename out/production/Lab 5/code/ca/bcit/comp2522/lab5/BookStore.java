@@ -255,19 +255,19 @@ public class BookStore
         bookstore.printGroupByDecade(2000);
         System.out.println("\nLongest Book Title:");
         bookstore.getLongest();
-//        System.out.println("\nIs there a book written in 1950?");
-//        System.out.println(bookstore.isThereABookWrittenBetween(1950));
-//        System.out.println("\nHow many books contain 'heart'?");
-//        System.out.println(bookstore.howManyBooksContain("heart"));
-//        System.out.println("\nPercentage of books written between 1940 and 1950:");
-//        System.out.println(bookstore.whichPercentWrittenBetween(1940, 1950) + "%");
-//        System.out.println("\nOldest book:");
-//        oldest = bookstore.getOldestBook();
-//        System.out.println(oldest.getTitle() + " by " + oldest.getAuthorName() + ", " +
-//                oldest.getYearPublished());
-//        System.out.println("\nBooks with titles 15 characters long:");
-//        fifteenCharTitles = bookstore.getBooksThisLength(15);
-//        fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
+        System.out.println("\nIs there a book written in 1950?");
+        System.out.println(bookstore.isThereABookWrittenBetween(1950));
+        System.out.println("\nHow many books contain 'heart'?");
+        System.out.println(bookstore.howManyBooksContain("heart"));
+        System.out.println("\nPercentage of books written between 1940 and 1950:");
+        System.out.println(bookstore.whichPercentWrittenBetween(1940, 1950) + "%");
+        System.out.println("\nOldest book:");
+        oldest = bookstore.getOldestBook();
+        System.out.println(oldest.getTitle() + " by " + oldest.getAuthorName() + ", " +
+                oldest.getYearPublished());
+        System.out.println("\nBooks with titles 15 characters long:");
+        fifteenCharTitles = bookstore.getBooksThisLength(15);
+        fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
 
         // Part 2
         final Iterator<String> title;
@@ -293,5 +293,57 @@ public class BookStore
         {
             System.out.println(map.get(s).toString());
         }   
+    }
+
+    private List<Novel> getBooksThisLength(int titleLength) {
+
+        List<Novel> books = new ArrayList<>();
+        for (Novel novel : novels) {
+            if (novel.getTitle().length() == titleLength) {
+                books.add(novel);
+            }
+        }
+        return books;
+
+    }
+
+    private Novel getOldestBook() {
+        Novel oldest = novels.get(0);
+        for (Novel novel : novels) {
+            if (novel.getPublishedYear() < novel.getPublishedYear()) {
+                oldest = novel;
+            }
+        }
+        return oldest;
+    }
+
+    private double whichPercentWrittenBetween(int first, int last) {
+        int count = 0;
+        for (Novel novel : novels) {
+            if (novel.getPublishedYear() < first || novel.getPublishedYear() > last) {
+                count++;
+            }
+        }
+        return (double) count / novels.size() * 100;
+    }
+
+    private boolean howManyBooksContain(String word) {
+        int count = 0;
+        for (Novel novel : novels) {
+            if (novel.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                count++;
+            }
+        }
+        return count >= 0;
+    }
+
+    private boolean isThereABookWrittenBetween(int year) {
+
+        for (Novel novel : novels) {
+            if (novel.getPublishedYear() == year) {
+                return true;
+            }
+        }
+        return false;
     }
 }
